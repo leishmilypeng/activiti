@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:activiti="http://activiti.org/bpmn"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             typeLanguage="http://www.w3.org/2001/XMLSchema"
+             expressionLanguage="http://www.w3.org/1999/XPath"
+             targetNamespace="http://www.activiti.org/processdef">
+  <process id="process" isExecutable="true">
+    <startEvent id="startevent1" name="月财务报告审核开始"></startEvent>
+    <sequenceFlow id="sid-3E21D677-86D0-4D89-97D5-3FD1C161E657" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="财务编写月财务报告" activiti:candidateGroups="marketing"></userTask>
+    <userTask id="usertask2" name="股东审核月财务审计报告" activiti:candidateGroups="management"></userTask>
+    <sequenceFlow id="sid-A6212A38-0DD0-4D0A-9EE2-3782B4ABF853" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <endEvent id="endevent1" name="月财务报告审核结束"></endEvent>
+    <sequenceFlow id="sid-7F9A85C6-84E0-483E-BB0C-A36FDD3592D0" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_process">
+    <bpmndi:BPMNPlane bpmnElement="process" id="BPMNPlane_process">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="75.0" y="201.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="80.0" width="100.0" x="270.0" y="165.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="80.0" width="100.0" x="495.0" y="176.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="28.0" width="28.0" x="765.0" y="202.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-3E21D677-86D0-4D89-97D5-3FD1C161E657" id="BPMNEdge_sid-3E21D677-86D0-4D89-97D5-3FD1C161E657">
+        <omgdi:waypoint x="105.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="187.5" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="187.5" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="205.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-7F9A85C6-84E0-483E-BB0C-A36FDD3592D0" id="BPMNEdge_sid-7F9A85C6-84E0-483E-BB0C-A36FDD3592D0">
+        <omgdi:waypoint x="595.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="216.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-A6212A38-0DD0-4D0A-9EE2-3782B4ABF853" id="BPMNEdge_sid-A6212A38-0DD0-4D0A-9EE2-3782B4ABF853">
+        <omgdi:waypoint x="370.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="432.5" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="432.5" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="216.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

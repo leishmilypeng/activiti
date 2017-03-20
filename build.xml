@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="hxerp" basedir="d:/hxerp" default="all">
+    <property name="ftp.username" value="root"/>
+    <property name="ftp.password" value="123456"/>      <!--虚拟机服务器-->
+    <property name="ftp.dest" value="10.0.14.244:/home/leipeng"/>
+
+    <property name="jre.dir" value="C:\Program Files\Java\jre1.8.0_112"/>
+    <property name="deploy.name" value="activiti.war"/>
+
+    <property name="project.dir" value="E:\workspace2\activiti"/>
+    <property name="project.name" value="activiti"/>
+    <property name="project.webapp" value="${project.name}/main/webapp" />
+    <property name="project.weblib" value="${project.name}/main/webapp/WEB-INF/lib"/>
+    <property name="project.src" value="${project.name}/com"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="build.webapp" value="${build.dir}"/>
+    <property name="build.webinf" value="${build.dir}/WEB-INF"/>
+    <property name="build.weblib" value="${build.dir}/WEB-INF/lib"/>
+    <property name="build.dest" value="${build.dir}/WEB-INF/classes"/>
+
+    <target name="clean">
+        <delete dir="${project.name}"/>
+        <delete dir="${build.dir}"/>
+        <delete file="${deploy.name}"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <echo message="初始化目录..."/>
+
+        <mkdir dir="${project.name}" ></mkdir>
+        <mkdir dir="${build.dir}" ></mkdir>
+        <mkdir dir="${build.webapp}" ></mkdir>
+        <mkdir dir="${build.webinf}" ></mkdir>
+        <mkdir dir="${build.weblib}" ></mkdir>
+
+        <copy todir="${project.name}">
+            <fileset dir="${project.dir}/src">
+                <include name="**"/>
+            </fileset>
+        </copy>
+
+        <delete dir="${build.dest}"></delete>
+        <mkdir dir="${build.dest}" ></mkdir>
+
+        <copy todir="${build.webapp}">
+            <fileset dir="${project.webapp}">
+                   <include name="**"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+    <path id="compile.classpath">
+        <fileset dir="${jre.dir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${project.weblib}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile" depends="init">
+        <echo message="编译文件..."/>
+        <javac debug="on" srcdir="${project.src}" destdir="${build.dest}" includeantruntime="false" nowarn="yes" classpathref="compile.classpath" >
+        </javac>
+
+        <copy todir="${build.dest}/diagrams">
+            <fileset dir="${project.src}/diagrams">
+                <include name="*.bpmn20.xml"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="deploy" description="deploy project to destination directory">
+        <echo message="打包发布..."/>
+        <delete file="${deploy.name}"/>
+        <zip destfile="${basedir}/${deploy.name}">
+            <zipfileset dir="${build.dir}"/>
+        </zip>
+
+        <echo message="将war上传服务器" />
+        <!--需要额外增加jsch-0.1.54.jar包支持scp-->
+        <scp file="${basedir}\${deploy.name}" todir="${ftp.username}:${ftp.password}@${ftp.dest}"
+             trust="true" verbose="true"/>
+        <echo message="上传完毕" />
+
+    </target>
+
+    <target name="all" depends="clean,init,compile,deploy" description="deploys the project to tomcat and cleans the build files."/>
+</project>

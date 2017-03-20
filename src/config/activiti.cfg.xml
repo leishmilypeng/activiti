@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--activiti数据源-->
+    <bean id="activitiDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/activiti" />
+        <property name="username" value="root" />
+        <property name="password" value="123456" />
+    </bean>
+
+    <!--事务管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="activitiDataSource" />
+    </bean>
+
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <property name="dataSource" ref="activitiDataSource" />
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="databaseSchemaUpdate" value="true" />
+        <property name="jobExecutorActivate" value="false" />
+        <!--加载流程 Automatic resource deployment-->
+        <property name="deploymentResources" value="classpath:/diagrams/*.bpmn20.xml"/>
+    </bean>
+
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration" />
+    </bean>
+
+    <!--re-->
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+    <!--ru-->
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+    <!--hi-->
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+
+</beans>
